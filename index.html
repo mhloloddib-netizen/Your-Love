@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise</title>
+    
+    <!-- Google Fonts for Elegant Typography, Cursive and Bengali Script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === Base Styles & Reset === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f4e2e6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #4a4a4a;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* === Background Glowing Particles === */
+        .bg-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(212, 138, 149, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: riseUp 12s infinite linear;
+        }
+
+        @keyframes riseUp {
+            0% { transform: translateY(110vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+        }
+
+        /* === Floating Elements Container === */
+        #floating-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .floating-shape {
+            position: absolute;
+            bottom: -50px;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+        }
+
+        /* === Minimalist Audio Visualizer === */
+        .visualizer {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .visualizer:hover {
+            opacity: 1;
+        }
+
+        .visualizer .bar {
+            width: 4px;
+            height: 5px;
+            background-color: #d48a95;
+            border-radius: 2px;
+            will-change: height;
+        }
+
+        .visualizer.playing .bar {
+            animation: bounce 1s ease infinite alternate;
+        }
+
+        .visualizer.playing .bar:nth-child(1) { animation-delay: 0.1s; }
+        .visualizer.playing .bar:nth-child(2) { animation-delay: 0.4s; }
+        .visualizer.playing .bar:nth-child(3) { animation-delay: 0.2s; }
+        .visualizer.playing .bar:nth-child(4) { animation-delay: 0.5s; }
+
+        @keyframes bounce {
+            0% { height: 5px; }
+            100% { height: 25px; }
+        }
+
+        /* === Main Wrapper === */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        /* === Glassmorphism Instruction Card === */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 8px 32px 0 rgba(139, 90, 98, 0.1);
+            margin-bottom: 40px;
+            display: inline-block;
+            max-width: 90%;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .instruction {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            color: #724c52;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            color: #9a6b73;
+        }
+
+        /* === 3D Gift Box & Glow Aura === */
+        .gift-box-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .box-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(212, 138, 149, 0.25) 0%, rgba(212, 138, 149, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .gift-box-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: gentleFloat 4s infinite ease-in-out;
+        }
+
+        .gift-box-container:hover {
+            transform: scale(1.05);
+        }
+
+        .gift-box-container.opened {
+            animation: none;
+            pointer-events: none;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .box-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 130px;
+            height: 100px;
+            background-color: #d48a95;
+            border-radius: 5px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .box-bottom.bounce {
+            animation: bottomBounce 0.8s ease forwards;
+        }
+
+        @keyframes bottomBounce {
+            0%, 100% { transform: scale(1) translateY(0); }
+            30% { transform: scale(0.95) translateY(5px); }
+            60% { transform: scale(1.02) translateY(-2px); }
+        }
+
+        .box-bottom::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 100%;
+            background-color: #fdfbfb;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+        }
+
+        .box-lid {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 150px;
+            height: 35px;
+            background-color: #c07a84;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .box-lid::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 100%;
+            background-color: #fdfbfb;
+        }
+
+        .bow {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+        }
+        .bow::before, .bow::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 5px solid #fdfbfb;
+            border-radius: 50%;
+            top: 0;
+        }
+        .bow::before { left: -15px; }
+        .bow::after { right: -15px; }
+
+        .open-lid {
+            animation: openLidSequence 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes openLidSequence {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            30% { transform: translateY(-15px) rotate(-15deg); opacity: 1; }
+            100% { transform: translateY(-150px) rotate(45deg); opacity: 0; }
+        }
+
+        /* === Heart Burst Animation === */
+        .burst-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 99;
+            animation: heartBurst 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes heartBurst {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            30% { transform: translate(-50%, -100%) scale(2.2); opacity: 1; }
+            100% { transform: translate(-50%, -180%) scale(2.8); opacity: 0; }
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* === Surprise Container with Pop-up === */
+        .surprise-wrapper {
+            display: none;
+            opacity: 0;
+        }
+
+        .surprise-wrapper.show {
+            display: block;
+            animation: popUpZoom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUpZoom {
+            0% { opacity: 0; transform: scale(0.5) translateY(50px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Polaroid Photo Frame with Washi Tape and Sway Animation */
+        .polaroid {
+            position: relative;
+            background: #fff;
+            padding: 15px 15px 20px 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-radius: 2px;
+            margin: 15px auto 30px auto;
+            max-width: 280px;
+            transform: rotate(-3deg);
+            animation: photoSway 6s infinite ease-in-out;
+            will-change: transform;
+        }
+
+        /* Washi Tape Ribbon Design */
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+            width: 90px;
+            height: 25px;
+            background-color: rgba(212, 138, 149, 0.4);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 2px dashed rgba(255, 255, 255, 0.5);
+            border-right: 2px dashed rgba(255, 255, 255, 0.5);
+            z-index: 5;
+        }
+
+        @keyframes photoSway {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(3deg) translateY(-8px); }
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 2px;
+            background-color: #f0f0f0;
+            min-height: 200px;
+            object-fit: cover;
+        }
+
+        .polaroid .caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #555;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* Typewriter Text Box with Hind Siliguri Font */
+        .message-box {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        .typewriter-text {
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #5d4037;
+            text-align: center;
+            min-height: 80px;
+        }
+
+        /* Blinking cursor styled as | line */
+        .cursor {
+            display: inline-block;
+            color: #5d4037;
+            font-weight: bold;
+            animation: blink 0.7s infinite;
+            margin-left: 3px;
+        }
+
+        /* Hand-written Digital Signature */
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: #9a6b73;
+            margin-top: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            text-align: right;
+            padding-right: 15px;
+            will-change: transform, opacity;
+        }
+
+        .signature.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* === Interactive Button Group === */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 1s ease, transform 1s ease;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+
+        .button-group.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .btn-premium {
+            background-color: #d48a95;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 138, 149, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium:hover {
+            background-color: #c07a84;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 138, 149, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 480px) {
+            .polaroid { max-width: 240px; }
+            .typewriter-text { font-size: 1.05rem; }
+            .instruction { font-size: 1.15rem; }
+            .subtitle { font-size: 1.25rem; }
+            .btn-premium { padding: 10px 24px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Music (Direct High-Quality Online Piano MP3 Link Added) -->
+    <audio id="bg-music" loop>
+        <source src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Canon_in_D_Major_%28ISRC_USUAN1100301%29.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Interactive Minimalist Audio Visualizer -->
+    <div class="visualizer" id="visualizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Floating Shapes Container (For Hearts) -->
+    <div id="floating-container"></div>
+
+    <div class="main-wrapper">
+        <!-- Initial View: The Gift Box -->
+        <div id="initial-view">
+            <div class="glass-card">
+                <h2 class="instruction">একটি বিশেষ উপহার, বক্সটিতে ক্লিক করো</h2>
+                <p class="subtitle">A little secret is waiting for you</p>
+            </div>
+            
+            <div class="gift-box-wrapper">
+                <div class="box-glow"></div>
+                <div id="gift-box" class="gift-box-container">
+                    <div class="box-lid" id="box-lid">
+                        <div class="bow"></div>
+                    </div>
+                    <div class="box-bottom" id="box-bottom"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final View: The Surprise -->
+        <div id="surprise-view" class="surprise-wrapper">
+            <div class="polaroid">
+                <!-- Image Tag (Source will be injected via JS) -->
+                <img src="" alt="Beautiful Memory" id="memory-img">
+                <p class="caption">Forever Yours</p> 
+            </div>
+            
+            <div class="message-box">
+                <p class="typewriter-text">
+                    <span id="typed-content"></span><span class="cursor" id="cursor">|</span>
+                </p>
+                <!-- Hand-written Digital Signature -->
+                <p class="signature" id="signature">Yours, Tuhin</p>
+            </div>
+
+            <!-- Centered Virtual Hug Button -->
+            <div class="button-group" id="button-group">
+                <button class="btn-premium" id="btn-hug">Virtual Hug</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =======================================================
+        // আপনার ছবি ও মেসেজ এখানে পরিবর্তন করুন (ImgBB Link)
+        // =======================================================
+        
+        // ১. ImgBB থেকে পাওয়া আপনার ইমেজের ডিরেক্ট লিংকটি নিচের কোটেশনের ভেতরে বসিয়ে দিন:
+        const MY_IMAGE_LINK = "https://i.ibb.co.com/xK6RjR68/image-wm-1-Photoroom.png"; 
+        
+        // ২. আপনার মেসেজটি এখানে পরিবর্তন করতে পারেন (কোনো ইমোজি নেই):
+        const MESSAGE_TEXT = "তোমার জন্য আমার এই ছোট্ট আয়োজন। তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। তোমার হাসি আমার পৃথিবী সুন্দর করে। তোমাকে অনেক ভালোবাসি।";
+        
+        // =======================================================
+
+        // DOM Elements
+        const giftBox = document.getElementById('gift-box');
+        const boxLid = document.getElementById('box-lid');
+        const boxBottom = document.getElementById('box-bottom');
+        const initialView = document.getElementById('initial-view');
+        const surpriseView = document.getElementById('surprise-view');
+        const bgMusic = document.getElementById('bg-music');
+        const floatingContainer = document.getElementById('floating-container');
+        const typedContent = document.getElementById('typed-content');
+        const cursor = document.getElementById('cursor');
+        const memoryImg = document.getElementById('memory-img');
+        const buttonGroup = document.getElementById('button-group');
+        const btnHug = document.getElementById('btn-hug');
+        const visualizer = document.getElementById('visualizer');
+        const signature = document.getElementById('signature');
+
+        // Set Image Source from Variable
+        memoryImg.src = MY_IMAGE_LINK;
+
+        let typingSpeed = 80; 
+        let charIndex = 0;
+        let holdTimer;
+        const holdDuration = 600; // 0.6 seconds to register a hold/long press
+
+        // SVG Shape for floating/bursting hearts (Professional Rose Gold)
+        const svgHeart = `
+            <svg viewBox="0 0 32 29.6" width="20" height="20">
+                <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z" fill="#d48a95"/>
+            </svg>
+        `;
+
+        // SVG Shape for Heart Burst (Bigger, Deep Rose Gold)
+        const svgLargeHeart = `
+            <svg viewBox="0 0 32 29.6" width="60" height="60">
+                <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z" fill="#b76e79"/>
+            </svg>
+        `;
+
+        // === Functions ===
+
+        // 1. Create Background Particles (Slower and ambient)
+        function createBackgroundParticles() {
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('bg-particle');
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // 2. Create Floating Shapes
+        function createFloatingShapes() {
+            setInterval(() => {
+                const shape = document.createElement('div');
+                shape.classList.add('floating-shape');
+                shape.innerHTML = svgHeart;
+                
+                const randomLeft = Math.random() * 100;
+                const randomSize = Math.random() * 1.5 + 0.5;
+                const randomDuration = Math.random() * 5 + 5;
+
+                shape.style.left = randomLeft + '%';
+                shape.style.transform = `scale(${randomSize})`;
+                shape.style.animationDuration = randomDuration + 's';
+
+                floatingContainer.appendChild(shape);
+
+                setTimeout(() => {
+                    shape.remove();
+                }, randomDuration * 1000);
+
+            }, 400); 
+        }
+
+        // 3. Typewriter Effect (Cursor disappears, signature and button show at the end)
+        function typeWriter() {
+            if (charIndex < MESSAGE_TEXT.length) {
+                typedContent.innerHTML += MESSAGE_TEXT.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // Remove cursor element when typing finishes
+                if (cursor) {
+                    cursor.style.display = 'none';
+                }
+                // Fade in signature smoothly
+                setTimeout(() => {
+                    signature.classList.add('show');
+                    // Fade in the interactive button shortly after signature
+                    setTimeout(() => {
+                        buttonGroup.classList.add('show');
+                    }, 800);
+                }, 1000);
+            }
+        }
+
+        // 4. Create Heart Burst from Box
+        function createHeartBurst() {
+            const burstHeart = document.createElement('div');
+            burstHeart.classList.add('burst-heart');
+            burstHeart.innerHTML = svgLargeHeart;
+            
+            giftBox.appendChild(burstHeart);
+
+            setTimeout(() => {
+                burstHeart.remove();
+            }, 800);
+        }
+
+        // 5. Trigger Huge Heart Spray (For Virtual Hug)
+        function triggerVirtualHugSpray() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const shape = document.createElement('div');
+                    shape.classList.add('floating-shape');
+                    shape.innerHTML = svgHeart;
+                    
+                    const randomLeft = Math.random() * 100;
+                    const randomSize = Math.random() * 2 + 1; 
+                    const randomDuration = Math.random() * 3 + 3; 
+
+                    shape.style.left = randomLeft + '%';
+                    shape.style.transform = `scale(${randomSize})`;
+                    shape.style.animationDuration = randomDuration + 's';
+
+                    floatingContainer.appendChild(shape);
+
+                    setTimeout(() => {
+                        shape.remove();
+                    }, randomDuration * 1000);
+                }, i * 50); 
+            }
+        }
+
+        // 6. Hidden Music Playback Function
+        function playHiddenMusic() {
+            if (bgMusic.paused) {
+                bgMusic.volume = 0.5; 
+                bgMusic.play()
+                    .then(() => {
+                        console.log("Music started successfully.");
+                    })
+                    .catch(error => console.log("Audio play prevented:", error));
+            }
+        }
+
+        // === Event Listeners ===
+
+        // Gift Box Click
+        giftBox.addEventListener('click', function() {
+            giftBox.classList.add('opened');
+            createHeartBurst();
+
+            // Play music on box open
+            bgMusic.volume = 0.5; 
+            bgMusic.play().catch(error => console.log("Audio play prevented:", error));
+
+            boxLid.classList.add('open-lid');
+            boxBottom.classList.add('bounce');
+
+            setTimeout(() => {
+                initialView.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    initialView.style.display = 'none';
+                    surpriseView.classList.add('show');
+                    
+                    createFloatingShapes();
+                    setTimeout(typeWriter, 1200); 
+
+                }, 500); 
+                
+            }, 800); 
+        });
+
+        // Virtual Hug Button Click
+        btnHug.addEventListener('click', function() {
+            triggerVirtualHugSpray();
+        });
+
+        // --- Music Visualizer Events & State sync ---
+        bgMusic.addEventListener('play', () => {
+            visualizer.classList.add('playing');
+        });
+
+        bgMusic.addEventListener('pause', () => {
+            visualizer.classList.remove('playing');
+        });
+
+        // Visualizer click plays/pauses music
+        visualizer.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(err => console.log("Audio play prevented:", err));
+            } else {
+                bgMusic.pause();
+            }
+        });
+
+        // --- Hidden Music Gestures (Double Click / Long Press Anywhere) ---
+
+        // A. Double Click Anywhere
+        document.addEventListener('dblclick', playHiddenMusic);
+
+        // B. Long Press / Hold Anywhere
+        function handleStartHold(e) {
+            // Ignore if clicking on interactive buttons, visualizer or box to prevent conflict
+            if (e.target.tagName === 'BUTTON' || e.target.closest('#gift-box') || e.target.closest('#visualizer')) {
+                return;
+            }
+            holdTimer = setTimeout(playHiddenMusic, holdDuration);
+        }
+
+        function handleEndHold() {
+            clearTimeout(holdTimer);
+        }
+
+        // Mouse Triggers
+        document.addEventListener('mousedown', handleStartHold);
+        document.addEventListener('mouseup', handleEndHold);
+        document.addEventListener('mouseleave', handleEndHold);
+
+        // Touch Triggers
+        document.addEventListener('touchstart', handleStartHold);
+        document.addEventListener('touchend', handleEndHold);
+        document.addEventListener('touchcancel', handleEndHold);
+
+        // Initialize Background Particles
+        window.onload = function() {
+            createBackgroundParticles();
+        };
+    </script>
+</body>
+</html>
